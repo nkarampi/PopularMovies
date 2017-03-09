@@ -18,7 +18,7 @@ public class NetworkUtils {
 
    // private static final String BASE_URL = "http://api.themoviedb.org/3/discover/movie";
    //You need to get an API KEY from the movie db
-   // private static final String API_KEY = "";
+    private static final String API_KEY = "";
 
     public NetworkUtils(){}
 

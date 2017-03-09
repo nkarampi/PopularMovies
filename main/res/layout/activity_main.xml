@@ -6,6 +6,12 @@
     android:background="#000000"
     tools:context="com.example.android.popularmovies.MainActivity">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <GridView
         android:id="@+id/grid"
         android:layout_width="match_parent"
@@ -19,7 +25,17 @@
 
         >
     </GridView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="An error has occured. Please swipe up to refresh"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:visibility="invisible" />
 
 
 </FrameLayout>
