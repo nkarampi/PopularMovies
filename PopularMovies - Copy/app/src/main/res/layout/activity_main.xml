@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="An error has occured. Please swipe up to refresh"
+        android:text="@string/error"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:visibility="invisible" />

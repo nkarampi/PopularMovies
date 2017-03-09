@@ -7,15 +7,15 @@
     >
     <item
         android:orderInCategory="1"
-        android:title="Sort"
+        android:title="@string/sort"
         app:showAsAction="ifRoom">
         <menu>
             <item
              android:id="@+id/menuSortPop"
-             android:title="Sort by popularity" />
+             android:title="@string/pop" />
             <item
              android:id="@+id/menuSortRating"
-             android:title="Sort by rating" />
+             android:title="@string/rate" />
         </menu>
     </item>
 
