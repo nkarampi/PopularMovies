@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -46,7 +47,7 @@ public class DetailActivity extends AppCompatActivity {
                 Movie movie= (Movie) intent.getExtras().getParcelable("movie");
                 textView1.setText(movie.getTitle());
                 textView2.setText(movie.getSynopsis());
-                textView3.setText(String.valueOf(movie.getRating()));
+                textView3.setText(String.valueOf(movie.getRating())+" /10");
                 textView4.setText(movie.getRelease());
 
                 Picasso.with(this).load("http://image.tmdb.org/t/p/w185/"+ movie.getImg()).resize(150,150).into(imageView);
