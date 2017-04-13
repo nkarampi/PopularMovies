@@ -1,8 +1,6 @@
 package com.example.android.popularmovies;
 
 
-import android.os.AsyncTask;
-import android.os.PersistableBundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -17,13 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.data.Movie;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.LinkedList;
-
-import static java.security.AccessController.getContext;
 
 /**
  * This is the Main Activity for the Popular Movies App.
@@ -130,14 +128,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     for (int i=0;i<moviesArray.length();i++){
                         JSONObject movie = moviesArray.getJSONObject(i);
+                        int id = movie.getInt("id");
                         String moviePath = movie.getString("poster_path");
                         String title = movie.getString("original_title");
                         String synopsis= movie.getString("overview");
                         double rating= movie.getDouble("vote_average");
                         String date = movie.getString("release_date");
-                        Movie newMovie = new Movie(i,title,moviePath,synopsis,rating,date);
+                        Movie newMovie = new Movie(id,title,moviePath,synopsis,rating,date);
                         movieList.add(newMovie);
                     }
+
                     return movieList;
                 }
                 catch (Exception e){

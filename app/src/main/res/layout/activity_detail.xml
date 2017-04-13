@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000"
     android:padding="@dimen/padding16"
-    tools:context="com.example.android.popularmovies.DetailActivity">
+    tools:context="com.example.android.popularmovies.details.DetailActivity">
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,7 +36,6 @@
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
                         />
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -44,14 +45,12 @@
                             android:padding="@dimen/padding16"
                             android:textSize="@dimen/textSize16"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"/>
+                            android:layout_height="wrap_content"/>
                         <TextView
                             android:id="@+id/t3"
                             android:textSize="@dimen/textSize16"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"/>
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -62,13 +61,11 @@
                             android:text="@string/release"
                             android:textSize="@dimen/textSize16"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"/>
+                            android:layout_height="wrap_content"/>
                         <TextView
                             android:id="@+id/t4"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@android:color/white" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -79,18 +76,69 @@
                 android:text="@string/synopsis"
                 android:textSize="@dimen/textSize18"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white" />
+                android:layout_height="wrap_content"/>
 
 
             <TextView
                 android:id="@+id/t2"
                 android:textSize="@dimen/textSize18"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="@string/trailers"
+                android:layout_marginTop="8dp"
+                android:textSize="@dimen/textSize18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                />
+
+            <com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView
+                android:id="@+id/listViewYt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                />
+
+            <TextView
+                android:onClick="expandColapseReviews"
+                android:text="@string/reviews"
+                android:layout_marginTop="8dp"
+                android:textSize="@dimen/textSize18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                />
+
+            <com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView
+                android:id="@+id/listViewRv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white" />
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                />
+
 
         </LinearLayout>
-       </ScrollView>
+</ScrollView>
+
 
 </LinearLayout>

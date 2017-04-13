@@ -7,4 +7,6 @@
     <string name="rating">Rating:</string>
     <string name="release">Release date:</string>
     <string name="synopsis">Synopsis:</string>
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
 </resources>

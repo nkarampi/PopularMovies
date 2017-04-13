@@ -44,6 +44,36 @@ public class NetworkUtils {
         return url;
     }
 
+    public static URL buildTrailerUrl(int id){
+        URL url =null;
+        String urlString=null;
+        try {
+            urlString =  "https://api.themoviedb.org/3/movie/"+id+"/videos?api_key="+ API_KEY;
+
+            url = new URL(urlString);
+        }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildReviewUrl(int id){
+        URL url =null;
+        String urlString=null;
+        try {
+            urlString =  "https://api.themoviedb.org/3/movie/"+id+"/reviews?api_key="+ API_KEY;
+
+            url = new URL(urlString);
+        }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
 
     /**
      * Method from lesson's.
