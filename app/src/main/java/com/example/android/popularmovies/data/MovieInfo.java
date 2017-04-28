@@ -5,7 +5,9 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
- * Created by Nikos on 11/4/2017.
+ * This Class has two lists.
+ * One is for the Reviews and one for our Trailer Keys. We have this class so in our Detail Activity
+ * we can fetch them and with the suitable adapters to create them in our layout.
  */
 
 public class MovieInfo {
@@ -19,8 +21,6 @@ public class MovieInfo {
     }
 
     public ArrayList<String> getKeys() {
-        //for (int i = 0 ; i< keys.size();i++)
-       // Log.d("myTag", keys.get(i));
         return keys;
     }
 

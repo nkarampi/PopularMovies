@@ -16,7 +16,11 @@ import com.example.android.popularmovies.R;
 import java.util.ArrayList;
 
 /**
- * Created by Nikos on 13/4/2017.
+ * This class represents the Adapter for our trailers.
+ * We store our keys for the trailers in a list and we create some buttons in a listView
+ * so we have all of them in our layout.
+ * When a button is clicked we create the link with our keys and we start the video on youtube
+ * or browser.
  */
 
 public class MovieInfoAdapter extends BaseAdapter implements ListAdapter {
@@ -51,7 +55,7 @@ public class MovieInfoAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.list_trailers_item, null);
         }
         TextView listItemText = (TextView)view.findViewById(R.id.tvTrailers);
-        listItemText.setText("Trailer "+ (position+1));
+        listItemText.setText("Play trailer "+ (position+1));
 
         ImageButton playBtn = (ImageButton)view.findViewById(R.id.buttonPlay);
 

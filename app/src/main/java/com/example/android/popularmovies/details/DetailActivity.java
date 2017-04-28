@@ -1,22 +1,32 @@
 package com.example.android.popularmovies.details;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.support.annotation.StringDef;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.popularmovies.MainActivity;
 import com.example.android.popularmovies.NetworkUtils;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MovieInfo;
 import com.example.android.popularmovies.data.Review;
+import com.example.android.popularmovies.favorites.MoviesContract;
 import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
 import com.squareup.picasso.Picasso;
 
@@ -29,8 +39,11 @@ import java.util.ArrayList;
 /**
  * This is the Detail activity which is prompted when a user clickes on a movie poster.
  * It shows the main info as the poster, title, rating etc.
- * Will have trailers,ratings on a future update.
  *
+ * At this stage we also fetch the trailers and the reviews for each movie.
+ *
+ * Because we didn't want to have a scrollable list view and to expand all it's data in our layout
+ * we use the below dependency found from github to replace the basic listView.
  * https://github.com/PaoloRotolo/ExpandableHeightListView
  */
 public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<MovieInfo>{
@@ -41,6 +54,21 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private TextView textView4;
     private ImageView imageView;
 
+    private TextView tvReviewsError;
+    private TextView tvTrailersError;
+
+    private int movieID;
+    private int cursorID;
+    private String title;
+    private String img;
+    private String synopsis;
+    private double rating;
+    private String release;
+    private boolean isFavorite;
+
+    /*
+        These are the adapters and list views for Trailers and Reviews.
+     */
     private ExpandableHeightListView expandableListView ;
     private MovieInfoAdapter movieInfoTrailersAdapter;
 
@@ -48,14 +76,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private MovieReviewsAdapter movieReviewsAdapter;
 
     private static final int LOADER_ID = 266;
-    //private ArrayList<String> trailerKeys;
-    private int movieID;
+
     private MovieInfo movieInfo;
 
-    private boolean noTrailers=false;
-    private boolean noReviews=false;
+    private boolean noTrailers=false; //This boolean determines if we have trailers for the movie or not.
+    private boolean noReviews=false;  //This boolean determines if we have reviews for the movie or not.
 
-    private boolean isExpanded=false;
+    private boolean isExpanded=false;   //This boolean determines if the list is expanded or not.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +97,19 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     }
 
 
-
+    /**
+     * With this loader we fetch the trailers and reviews for each movie.
+     * We store them in a MovieInfo object which can store all the info we want
+     * in ArrayLists.
+     * We also have text views which become visible if there aren't any reviews or trailers.
+     * @param id
+     * @param args
+     * @return
+     */
     @Override
     public Loader<MovieInfo> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<MovieInfo>(this) {
 
-            //ArrayList<String> trailers=null;
             MovieInfo aMovieInfo = null;
 
             @Override
@@ -106,7 +140,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
                         JSONArray moviesArray = JSONString.getJSONArray("results");
                         if (moviesArray.length()<=1){
-                            // id=author=content="No reviews yet"; //USE A TEXT VIEW
+                            tvTrailersError.setVisibility(View.VISIBLE);
                             noTrailers=true;
                         }
                         for (int i=0;i<moviesArray.length();i++){
@@ -116,7 +150,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                             if (type.equals("Trailer"))
                                 trailerKeys.add(key);
                         }
-                       // return trailerKeys;
                      }
                     catch (Exception e){
                       e.printStackTrace();
@@ -128,15 +161,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     String httpResponse = NetworkUtils.getResponseFromHttpUrl(mdbReviewUrl);
                     JSONObject JSONString = new JSONObject(httpResponse);
 
-                    //check total results
-                    //JSONObject total = JSONString.getJSONObject("total_results");
-                    //String totalResults = total.getString("total_results");
-                    //if totalResults
-
                     JSONArray moviesArray = JSONString.getJSONArray("results");
                     String id=null,content=null,author=null;
                     if (moviesArray.length()<=1){
-                       // id=author=content="No reviews yet"; //USE A TEXT VIEW
+                       tvReviewsError.setVisibility(View.VISIBLE);
                         noReviews=true;
                     }
                     else{
@@ -150,8 +178,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                             reviews.add(review);
                         }
                     }
-
-                    // return trailerKeys;
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -170,13 +196,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         ArrayList<String> dataKeys = data.getKeys();
 
         if (dataReviews != null && dataKeys != null) {
-      //      if ( data.getKeys() != null) {
-            //errorTextView.setVisibility(View.INVISIBLE); use a text for fetching trailers
-          //  movieAdapter = new MovieAdapter(MainActivity.this,data);
-           // recyclerView.setAdapter(movieAdapter);
-            //for (int i = 0 ; i<data.getKeys().size();i++) {
-             //   yt.append(data.getKeys().get(i) + "\n \n");
-           // }
             if (noTrailers==false) {
                 movieInfoTrailersAdapter = new MovieInfoAdapter(dataKeys, this);
 
@@ -211,11 +230,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         textView4 = (TextView) findViewById(R.id.t4);
         imageView = (ImageView) findViewById(R.id.i1);
 
-       // yt = (TextView) findViewById(R.id.yt);
+        tvReviewsError = (TextView) findViewById(R.id.reviews_error);
+        tvTrailersError = (TextView) findViewById(R.id.trailers_error);
+
         expandableListView = (ExpandableHeightListView) findViewById(R.id.listViewYt) ;
         expandableListViewforReviews = (ExpandableHeightListView) findViewById(R.id.listViewRv);
-
-       // trailerKeys = new ArrayList<String>();
 
         Intent intent = getIntent();
 
@@ -223,13 +242,18 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             if (intent.hasExtra("movie")) {
                 Movie movie= (Movie) intent.getExtras().getParcelable("movie");
                 movieID = movie.getId();
-                textView1.setText(movie.getTitle());
-                textView2.setText(movie.getSynopsis());
-                textView3.setText(String.valueOf(movie.getRating())+" /10");
-                textView4.setText(movie.getRelease());
+                cursorID = movie.getCursorId();
+                title = movie.getTitle();
+                synopsis = movie.getSynopsis();
+                rating = movie.getRating();
+                release = movie.getRelease();
+                img = movie.getImg();
+                isFavorite = movie.getFav();
 
-               // yt.setText(Integer.toString(movieID));
-
+                textView1.setText(title);
+                textView2.setText(synopsis);
+                textView3.setText(String.valueOf(rating)+" /10");
+                textView4.setText(release);
 
                 Picasso.with(this).load("http://image.tmdb.org/t/p/w185/"+ movie.getImg()).resize(150,150).into(imageView);
 
@@ -239,6 +263,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
     }
 
+    /**
+     * This method is being used when we click on Reviews so we will expand the list of reviews
+     * or "close" it.
+     * @param view
+     */
     public void expandColapseReviews(View view) {
         if (isExpanded){
             expandableListViewforReviews.setVisibility(View.GONE);
@@ -249,4 +278,49 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             isExpanded=true;
         }
     }
+
+    /**
+     * This method is used from the favorite button so we can favorite or unfavorite a movie.
+     * We have the cursorID variable so we can know if we have the movie on our db.
+     * We insert and delete via content providers depending if the movie is already marked as favorite
+     * by the user or not.
+     * @param view
+     */
+    public void makeFavorite(View view) {
+        if (isFavorite){
+            if (cursorID>-1){
+                String stringId = Integer.toString(cursorID);
+                Uri uri = MoviesContract.MoviesEntry.CONTENT_URI;
+                uri = uri.buildUpon().appendPath(stringId).build();
+
+                getContentResolver().delete(uri, null, null);
+
+                if (uri != null) {
+                    Toast.makeText(getBaseContext(), "Deleted from Favorites", Toast.LENGTH_LONG).show();
+                    isFavorite=false;
+                }
+            }
+        }
+        else {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_TITLE, title);
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_IMG, img);
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID, movieID);
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_RATING, rating);
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_RELEASE, release);
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_SYNOPSIS, synopsis);
+
+                Uri uri = getContentResolver().insert(MoviesContract.MoviesEntry.CONTENT_URI, contentValues);
+
+                String id = uri.getPathSegments().get(1);
+                cursorID = Integer.parseInt(id);
+
+                if (uri != null) {
+                    Toast.makeText(getBaseContext(), "Added to Favorites", Toast.LENGTH_LONG).show();
+                    isFavorite = true;
+                }
+
+        }
+    }
+
 }

@@ -143,10 +143,8 @@
                 />
 
             <TextView
-                android:onClick="expandColapseReviews"
                 android:text="@string/reviews"
                 android:textStyle="bold"
-                android:textColor="@android:color/holo_blue_dark"
                 android:layout_marginTop="@dimen/margin8"
                 android:textSize="@dimen/textSize18"
                 android:layout_width="match_parent"
@@ -163,7 +161,7 @@
                 android:id="@+id/listViewRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/reviews_error"

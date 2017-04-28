@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    >
+    <item
+        android:orderInCategory="1"
+        android:title="@string/sort"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+             android:id="@+id/menuSortPop"
+             android:title="@string/pop" />
+            <item
+             android:id="@+id/menuSortRating"
+             android:title="@string/rate" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/favorite"
+        android:orderInCategory="2"
+        android:title="@string/favorite_menu"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_star_white_24dp"
+        />
+
+
+</menu>

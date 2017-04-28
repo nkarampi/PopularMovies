@@ -3,15 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/padding8"
+    android:paddingTop="@dimen/padding8">
 
     <TextView
         android:id="@+id/tvAuthor"
+        android:textSize="@dimen/textSize16"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding8"/>
 
     <TextView
         android:id="@+id/tvContent"
+        android:textSize="@dimen/textSize14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

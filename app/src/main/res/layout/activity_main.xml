@@ -25,10 +25,10 @@
         android:id="@+id/tv_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="@dimen/padding16"
         android:text="@string/error"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/textSize20"
         android:visibility="invisible" />
 
 

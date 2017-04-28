@@ -1,7 +1,8 @@
 package com.example.android.popularmovies.data;
 
 /**
- * Created by Nikos on 11/4/2017.
+ * This class has all the information we need for our Reviews.
+ * We fetch them and create new Review objects and then store them in our lists.
  */
 
 public class Review {

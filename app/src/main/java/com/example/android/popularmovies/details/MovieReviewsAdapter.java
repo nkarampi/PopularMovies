@@ -14,7 +14,9 @@ import com.example.android.popularmovies.data.Review;
 import java.util.ArrayList;
 
 /**
- * Created by Nikos on 13/4/2017.
+ * This class represents the Adapter for our Reviews.
+ * We take the list with our reviews and create a list with all the information
+ * we need to provide to the user.
  */
 
 public class MovieReviewsAdapter extends BaseAdapter implements ListAdapter {

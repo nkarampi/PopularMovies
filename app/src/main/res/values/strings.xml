@@ -3,10 +3,16 @@
     <string name="sort">Sort</string>
     <string name="pop">Sort by popularity</string>
     <string name="rate">Sort by rating</string>
+    <string name="favorite_menu">Favorites</string>
+
     <string name="error">An error has occured. Please check your connection and swipe up to refresh</string>
+    <string name="trailers_error">No trailers for this movie</string>
+    <string name="reviews_error">No reviews for this movie</string>
+
     <string name="rating">Rating:</string>
     <string name="release">Release date:</string>
     <string name="synopsis">Synopsis:</string>
     <string name="trailers">Trailers:</string>
     <string name="reviews">Reviews:</string>
+    <string name="favorite">Add to favorites</string>
 </resources>
