@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,6 +57,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private TextView tvReviewsError;
     private TextView tvTrailersError;
+
+    private Button favButton;
 
     private int movieID;
     private int cursorID;
@@ -140,7 +143,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
                         JSONArray moviesArray = JSONString.getJSONArray("results");
                         if (moviesArray.length()<=1){
-                            tvTrailersError.setVisibility(View.VISIBLE);
                             noTrailers=true;
                         }
                         for (int i=0;i<moviesArray.length();i++){
@@ -153,7 +155,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                      }
                     catch (Exception e){
                       e.printStackTrace();
-                     return null;
+                    // return null;
                    }
 
                 URL mdbReviewUrl = NetworkUtils.buildReviewUrl(movieID);
@@ -164,7 +166,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                     JSONArray moviesArray = JSONString.getJSONArray("results");
                     String id=null,content=null,author=null;
                     if (moviesArray.length()<=1){
-                       tvReviewsError.setVisibility(View.VISIBLE);
                         noReviews=true;
                     }
                     else{
@@ -181,7 +182,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 }
                 catch (Exception e){
                     e.printStackTrace();
-                    return null;
+                    //return null;
                 }
 
                 movieInfo = new MovieInfo(trailerKeys,reviews);
@@ -192,8 +193,17 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<MovieInfo> loader, MovieInfo data) {
-        ArrayList<Review> dataReviews = data.getReviews();
-        ArrayList<String> dataKeys = data.getKeys();
+        if (noReviews)  tvReviewsError.setVisibility(View.VISIBLE);
+        if (noTrailers) tvTrailersError.setVisibility(View.VISIBLE);
+        ArrayList<Review> dataReviews=new ArrayList<Review>();
+        ArrayList<String> dataKeys=new ArrayList<String>();
+        try {
+            dataReviews = data.getReviews();
+            dataKeys = data.getKeys();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
         if (dataReviews != null && dataKeys != null) {
             if (noTrailers==false) {
@@ -233,6 +243,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         tvReviewsError = (TextView) findViewById(R.id.reviews_error);
         tvTrailersError = (TextView) findViewById(R.id.trailers_error);
 
+        favButton = (Button) findViewById(R.id.buttonFavorites);
+
         expandableListView = (ExpandableHeightListView) findViewById(R.id.listViewYt) ;
         expandableListViewforReviews = (ExpandableHeightListView) findViewById(R.id.listViewRv);
 
@@ -256,6 +268,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 textView4.setText(release);
 
                 Picasso.with(this).load("http://image.tmdb.org/t/p/w185/"+ movie.getImg()).resize(150,150).into(imageView);
+
+            if (!isFavorite){
+                favButton.setText(getString(R.string.add_fav));
+                favButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_star_yellow_24dp,0,0,0);
+            }
+            else {
+                favButton.setText(getString(R.string.del_fav));
+                favButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_star_black_24dp,0,0,0);
+            }
 
                 getSupportLoaderManager().initLoader(LOADER_ID,null,DetailActivity.this);
 
@@ -296,7 +317,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 getContentResolver().delete(uri, null, null);
 
                 if (uri != null) {
-                    Toast.makeText(getBaseContext(), "Deleted from Favorites", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getBaseContext(), "Delete From Favorites", Toast.LENGTH_LONG).show();
+                    favButton.setText(getString(R.string.add_fav));
+                    favButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_star_yellow_24dp,0,0,0);
                     isFavorite=false;
                 }
             }
@@ -316,7 +339,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
                 cursorID = Integer.parseInt(id);
 
                 if (uri != null) {
-                    Toast.makeText(getBaseContext(), "Added to Favorites", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getBaseContext(), "Added to Favorites", Toast.LENGTH_LONG).show();
+                    favButton.setText(getString(R.string.del_fav));
+                    favButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_star_black_24dp,0,0,0);
+
                     isFavorite = true;
                 }
 

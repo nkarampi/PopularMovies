@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.data.Movie;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private RecyclerView recyclerView;
     private MovieAdapter movieAdapter;
 
+
     private boolean sortBy; //This boolean determines how we will sort the results
     private boolean isFavorite; //This boolean determines if we will show the local-favorite movies
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         errorTextView.setVisibility(View.INVISIBLE);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -109,13 +112,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      */
     @Override
     public void onRefresh(){
-        swipeRefreshLayout.setRefreshing(true);
-        movieList.clear();
-        //recyclerView.invalidate();
-        recyclerView.getRecycledViewPool().clear();
-        movieAdapter.notifyDataSetChanged();
-        getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
-        swipeRefreshLayout.setRefreshing(false);
+        if (recyclerView==null) {}
+        else {
+            swipeRefreshLayout.setRefreshing(true);
+            movieList.clear();
+            //recyclerView.invalidate();
+            recyclerView.getRecycledViewPool().clear();
+            movieAdapter.notifyDataSetChanged();
+            getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     /**
@@ -184,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             cursor.moveToNext();
                         }
                     }
-
                     return movieList;
                 }
                 else {

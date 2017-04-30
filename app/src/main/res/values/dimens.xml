@@ -3,7 +3,7 @@
     <dimen name="coverImageHeight">200dp</dimen>
     <dimen name="coverImageWidth">150dp</dimen>
 
-
+    <dimen name="padding6">6dp</dimen>
     <dimen name="padding8">8dp</dimen>
     <dimen name="padding16">16dp</dimen>
 

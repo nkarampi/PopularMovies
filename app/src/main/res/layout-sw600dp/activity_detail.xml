@@ -77,10 +77,11 @@
                         android:orientation="horizontal"
                         android:padding="@dimen/padding8">
                         <Button
+                            android:id="@+id/buttonFavorites"
                             android:onClick="makeFavorite"
-                            android:text="@string/favorite"
+                            android:text="@string/add_fav"
                             android:textSize="@dimen/textSize12"
-                            android:drawableLeft="@drawable/ic_star_black_24dp"
+                            android:drawableLeft="@drawable/ic_star_yellow_24dp"
                             android:drawablePadding="6dp"
                             android:gravity="left|center"
                             android:layout_width="wrap_content"
